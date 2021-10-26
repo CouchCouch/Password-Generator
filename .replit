@@ -1,2 +1,2 @@
 language = "python3"
-run = "random"
+run = "python3 password.py"
