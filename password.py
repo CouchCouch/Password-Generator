@@ -53,7 +53,7 @@ def decrypt(key):
             decrypted = fernet.decrypt(line)
             print(decrypted.decode())
 
-choice = input("Generate Passwrd or decrypt?\n")
+choice = input("Generate Password(g) or decrypt(d)?\n")
 
 if choice.lower() == "generate" or "g":
     length = input("Length of password?\n")
@@ -63,3 +63,5 @@ if choice.lower() == "generate" or "g":
         encrypt(password,input("Enter your password to encrypt the file.\n"))
 elif choice.lower() == "decrypt" or "d":
     decrypt(input("Enter your password to decrypt the file.\n"))
+else:
+    print("please chose a valid option")
