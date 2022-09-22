@@ -6,6 +6,4 @@ You can then chose whether or not you want to encrypt the password and enter the
 
 To decrypt run and enter you password you used for encryption
 
-![](example.png)
-
 [Here is a guide on how to run a python file.](https://www.tutorialspoint.com/how-to-run-python-program)
