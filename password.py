@@ -10,7 +10,6 @@ from getpass import getpass
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 numbers = '1234567890'
 symbols = "!@#$%-_"
-password = ""
 
 def check_salt():
     if os.path.exists('salt.txt.encrypted'):
@@ -30,7 +29,7 @@ def check_salt():
         return salt
 
 def generate(length):
-    global password
+    password = ""
     for i in range(int(length)):
         if i%5 == 1:
             password += random.choice(symbols)
@@ -40,7 +39,7 @@ def generate(length):
             password += random.choice(alphabet).upper()
         else:
             password += random.choice(alphabet)
-    return f"Your password is:\n{password}"
+    return password
 
 def encrypt(password,lock):
     dLock = lock.encode()
@@ -62,7 +61,7 @@ def encrypt(password,lock):
 
     with open('passwords.txt.encrypted', 'ab') as f:
         f.write(encrypted + b'\n')
-    return "Your password has been encrypted and saved to passwords.txt.encrypted"
+    return True
 
 def decrypt(password):
     dLock = password.encode()
@@ -89,14 +88,19 @@ def main():
     choice = input("Generate Password or decrypt?\n")
     if choice.lower() == "generate" or choice.lower() == "g":
         length = input("Length of password?\n")
-        print(generate(length))
+        password = generate(length)
+        print(f"Your password is:\n{password}")
         enc = input("Would you like to encrypt your password?(y/n)\n")
-    if enc.lower() == "yes" or enc.lower() == "y":
-        print(encrypt(password,getpass("Enter your password to encrypt the file.\n")))
+        if enc.lower() == "yes" or enc.lower() == "y":
+            if encrypt(password,getpass("Enter your password to encrypt the file.\n")):
+                print("Your password has been encrypted and saved to passwords.txt.encrypted")
     elif choice.lower() == "decrypt" or choice.lower() == "d":
-        passwords = (decrypt(getpass("Enter your password to decrypt the file.\n")))
-        for p in passwords:
-            print(p)
+        try:
+            passwords = (decrypt(getpass("Enter your password to decrypt the file.\n")))
+            for p in passwords:
+                print(p)
+        except:
+            print("Incorrect password.")
     elif choice.lower() == "save" or choice.lower() == "s":
         password = getpass("What is the password?\n")
         print(encrypt(password,getpass("Enter your password to encrypt the file.\n")))
