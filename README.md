@@ -5,5 +5,3 @@ To generate, enter the desired length of password and the program will randomly 
 You can then chose whether or not you want to encrypt the password and enter the encryption pass word and name of website the password is for.
 
 To decrypt run and enter you password you used for encryption
-
-[Here is a guide on how to run a python file.](https://www.tutorialspoint.com/how-to-run-python-program)
