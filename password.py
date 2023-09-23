@@ -33,11 +33,12 @@ def generate(length: int):
     """Generates a password based on the length given."""
     password = ""
     for i in range(int(length)):
-        if i%5 == 1:
+        r = random.randint(0,length)
+        if r%5 == 1:
             password += random.choice(symbols)
-        elif i%4 == 1:
+        elif r%4 == 1:
             password += random.choice(numbers)
-        elif i%2 == 1:
+        elif r%2 == 1:
             password += random.choice(alphabet).upper()
         else:
             password += random.choice(alphabet)
@@ -92,7 +93,10 @@ def main():
     choice = input("Generate Password or decrypt?\n")
     if choice.lower() == "generate" or choice.lower() == "g":
         length = input("Length of password?\n")
-        password = generate(length)
+        while(length.isnumeric() == False):
+            print("Please enter a number.")
+            length = input("Length of password?\n")
+        password = generate(int(length))
         print(f"Your password is:\n{password}")
         enc = input("Would you like to encrypt your password?(y/n)\n")
         if enc.lower() == "yes" or enc.lower() == "y":
