@@ -8,27 +8,31 @@ def window():
     app = QApplication(sys.argv)
     w = QWidget()
     w.setWindowTitle("Password Utilities")
-    w.setGeometry(100,100,900,500)
+    w.setGeometry(100,100,1000,500)
+
+    # screen to choose the function
 
     choose = QLabel(w)
     choose.setText("Choose an option:")
     choose.resize(400,100)
-    choose.move(350, 100)
+    choose.move(400, 100)
 
     generate_password = QPushButton(w)
     generate_password.setText("Generate Password") 
     generate_password.resize(300,60)
-    generate_password.move(145,190)
+    generate_password.move(195,190)
 
     decrypt_password = QPushButton(w)
     decrypt_password.setText("Decrypt Password")
     decrypt_password.resize(300,60)
-    decrypt_password.move(455,190)
+    decrypt_password.move(505,190)
 
     add_password = QPushButton(w)
     add_password.setText("Add Password")
     add_password.resize(300,60)
-    add_password.move(300,260)
+    add_password.move(350,260)
+
+    # screen shown to generate password
 
     password_length_label = QLabel(w)
     password_length_label.setText("Password Length:")
@@ -56,11 +60,24 @@ def window():
     password_label.move(495,20)
     password_label.hide()
 
-    password = QLineEdit(w)
-    password.setReadOnly(True)
-    password.move(630,20)
-    password.resize(230,40)
-    password.hide()
+    password_out = QLineEdit(w)
+    password_out.setReadOnly(True)
+    password_out.setEchoMode(QLineEdit.Password)
+    password_out.move(630,20)
+    password_out.resize(250,40)
+    password_out.hide()
+
+    show_password_out = QPushButton(w)
+    show_password_out.setIcon(QIcon("icons/visibility.svg"))
+    show_password_out.resize(40,40)
+    show_password_out.move(890,20)
+    show_password_out.hide()
+
+    copy_password = QPushButton(w)
+    copy_password.setIcon(QIcon("icons/copy.svg"))
+    copy_password.resize(40,40)
+    copy_password.move(935,20)
+    copy_password.hide()
     
     encrypt = QRadioButton(w)
     encrypt.setText("Encrypt")
@@ -79,6 +96,61 @@ def window():
     encryption_password.move(430,70)
     encryption_password.resize(230,40)
     encryption_password.hide()
+
+    generate_password.clicked.connect(lambda: generate_password_clicked())
+    # decrypt_password.clicked.connect(lambda: decrypt_password_clicked())
+    generate.clicked.connect(lambda: generate_clicked())
+    encrypt.clicked.connect(lambda: encrypt_clicked())
+    show_password_out.clicked.connect(lambda: show_password_out_clicked())
+    copy_password.clicked.connect(lambda: copy_password_clicked())
+
+    def generate_password_clicked():
+        choose.hide()
+        generate_password.hide()
+        decrypt_password.hide()
+        add_password.hide()
+        password_length_label.show()
+        password_length.show()
+        generate.show()
+        password_label.show()
+        password_out.show()
+        show_password_out.show()
+        encrypt.show()
+        copy_password.show()
+    
+    def encrypt_clicked():
+        if encrypt.isChecked():
+            encryption_password_label.show()
+            encryption_password.show()
+        else:
+            encryption_password_label.hide()
+            encryption_password.hide()
+
+    def generate_clicked():
+        if encrypt.isChecked():
+            password_out.setText(password.generate(password_length.value()))
+        else:
+            password_out.setText(password.generate(password_length.value()))
+            password_out.show()
+
+    global showing
+    showing = False
+
+    def show_password_out_clicked():
+        global showing
+        if showing:
+            show_password_out.setIcon(QIcon("icons/visibility.svg"))
+            password_out.setEchoMode(QLineEdit.Password)
+            showing = False
+        else:
+            show_password_out.setIcon(QIcon("icons/visibility_off.svg"))
+            password_out.setEchoMode(QLineEdit.Normal)
+            showing = True
+    
+    def copy_password_clicked():
+        clipboard = QApplication.clipboard()
+        clipboard.setText(password_out.text())
+
 
     w.show()
     sys.exit(app.exec_())
