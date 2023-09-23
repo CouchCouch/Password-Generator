@@ -12,6 +12,7 @@ numbers = '1234567890'
 symbols = "!@#$%-_"
 
 def check_salt():
+    """Checks if salt.txt.encrypted exists, if it does it returns the salt, if not it creates it and returns the salt."""
     if os.path.exists('salt.txt.encrypted'):
         with open('salt.txt.encrypted', 'rb') as f:
             for line in f:
@@ -28,7 +29,8 @@ def check_salt():
             f.write(salt)
         return salt
 
-def generate(length):
+def generate(length: int):
+    """Generates a password based on the length given."""
     password = ""
     for i in range(int(length)):
         if i%5 == 1:
@@ -41,7 +43,8 @@ def generate(length):
             password += random.choice(alphabet)
     return password
 
-def encrypt(password,lock):
+def encrypt(password:str, lock:str):
+    """Encrypts the password to save with the encryption password given. Returns True if successful."""
     dLock = lock.encode()
 
     kdf = PBKDF2HMAC(
@@ -63,7 +66,8 @@ def encrypt(password,lock):
         f.write(encrypted + b'\n')
     return True
 
-def decrypt(password):
+def decrypt(password:str):
+    """Decrypts the passwords.txt.encrypted file with the password. Returns a list of the passwords"""
     dLock = password.encode()
 
     kdf = PBKDF2HMAC(
