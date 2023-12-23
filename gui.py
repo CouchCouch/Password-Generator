@@ -118,6 +118,33 @@ def window():
 
     # screen shown to decrypt password
 
+    # Screen to enter password
+
+    DS_encryption_password_label = QLabel(w)
+    DS_encryption_password_label.setText("Encryption Password:")
+    DS_encryption_password_label.resize(160,40)
+    DS_encryption_password_label.move(20,20)
+    DS_encryption_password_label.hide()
+
+    DS_encryption_password = QLineEdit(w)
+    DS_encryption_password.setEchoMode(QLineEdit.Password)
+    DS_encryption_password.resize(230,40)
+    DS_encryption_password.move(150,20)
+    DS_encryption_password.hide()
+
+    DS_enter = QPushButton(w)
+    DS_enter.setText("Enter")
+    DS_enter.resize(100,40)
+    DS_enter.move(390,20)
+    DS_enter.hide()
+
+    
+
+    DS_password_list = QListWidget(w)
+    DS_password_list.resize(500,400)
+    DS_password_list.move(20,70)
+    DS_password_list.hide()
+
     # screen shown to add password
 
     AS_password_label = QLabel(w)
@@ -165,7 +192,7 @@ def window():
     # links the buttons to their functions
 
     generate_password.clicked.connect(lambda: generate_password_clicked())
-    # decrypt_password.clicked.connect(lambda: decrypt_password_clicked())
+    decrypt_password.clicked.connect(lambda: decrypt_password_clicked())
     add_password.clicked.connect(lambda: add_password_clicked())
     GS_generate.clicked.connect(lambda: generate_clicked())
     GS_encrypt.clicked.connect(lambda: encrypt_clicked())
@@ -251,6 +278,26 @@ def window():
         AS_account_name_label.show()
         AS_account_name.show()
         AS_encrypt_button.show()
+
+    def decrypt_password_clicked():
+        """
+        Hides the choose screen and shows the decrypt password screen
+        """
+        choose.hide()
+        generate_password.hide()
+        decrypt_password.hide()
+        add_password.hide()
+        DS_encryption_password_label.show()
+        DS_encryption_password.show()
+        DS_enter.show()
+        DS_password_list.show()
+
+    def decrypt_clicked():
+        """
+        Decrypts the passwords and shows them in the list
+        """
+        passwords = password.decrypt(DS_encryption_password.text())
+        DS_password_list.addItems(passwords)
     
     w.show()
     sys.exit(app.exec_())
